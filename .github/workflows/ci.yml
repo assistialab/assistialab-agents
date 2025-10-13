@@ -30,7 +30,7 @@ jobs:
       # ---------- Node.js ----------
       - name: Set up Node
         if: hashFiles('package.json') != ''
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: '20'
 
