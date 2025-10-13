@@ -16,3 +16,4 @@ yarn.lock
 .DS_Store
 .idea/
 .vscode/
+check_github_token_leaks.sh
