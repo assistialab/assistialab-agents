@@ -3,4 +3,17 @@ services:
     build: .
     image: assistialab-agents:dev
     container_name: assistialab-agents
-    command: python -c "import assistialab_agents as a; print(a.hello('Compose'))"
+    # keep container running so you can exec into it while developing
+    command: tail -f /dev/null
+
+    develop:
+      watch:
+        # live-sync source into container
+        - path: ./src
+          action: sync
+          target: /app/src
+        # rebuild if deps or Dockerfile change
+        - path: ./requirements.txt
+          action: rebuild
+        - path: ./Dockerfile
+          action: rebuild
