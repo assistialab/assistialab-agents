@@ -3,16 +3,14 @@ services:
     build: .
     image: assistialab-agents:dev
     container_name: assistialab-agents
-    # keep container running so you can exec into it while developing
-    command: tail -f /dev/null
+    ports:
+      - "8000:8000"
 
     develop:
       watch:
-        # live-sync source into container
         - path: ./src
           action: sync
           target: /app/src
-        # rebuild if deps or Dockerfile change
         - path: ./requirements.txt
           action: rebuild
         - path: ./Dockerfile

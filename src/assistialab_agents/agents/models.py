@@ -11,7 +11,7 @@ AgentKind = Literal[
 ]
 
 class Agent(BaseModel):
-    slug: str = Field(..., regex=r"^[a-z0-9-]+$")
+    slug: str = Field(..., pattern=r"^[a-z0-9-]+$")
     title: str
     summary: str
     badges: List[str] = []
