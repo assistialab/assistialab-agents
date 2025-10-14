@@ -90,3 +90,12 @@ def agent_demo(slug: str, payload: dict):
     if not res.get("ok"):
         raise HTTPException(status_code=400, detail=res.get("error", "demo failed"))
     return res
+
+from fastapi.middleware.cors import CORSMiddleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # tighten later
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
