@@ -1,28 +1,23 @@
 name: CI (Python)
-
-on:
-  push:
-  pull_request:
-
+on: [push, pull_request]
 jobs:
   python:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.11', '3.12']
     steps:
       - uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-
-      - name: Install deps
-        run: |
-          python -m pip install -U pip
-          pip install -r requirements.txt
-          python -m pip install -U ruff
-
-      - name: Lint with ruff
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+      - run: python -m pip install -U pip
+      - run: pip install -r requirements.txt
+      - run: python -m pip install -U ruff mypy
+      - name: Ruff
         run: ruff check .
-
-      - name: Run pytest
+      - name: Mypy
+        run: mypy src
+      - name: Pytest
         run: pytest -q
