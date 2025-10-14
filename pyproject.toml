@@ -1,3 +1,4 @@
+addopts = "-q --cov=assistialab_agents --cov-report=term-missing"
 [project]
 name = "assistialab-agents"
 version = "0.1.0"
