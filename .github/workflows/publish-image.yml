@@ -1,0 +1,24 @@
+name: Publish Docker image
+on:
+  push:
+    tags: ["v*"]
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Extract tag
+        id: meta
+        run: echo "TAG=${GITHUB_REF_NAME}" >> $GITHUB_OUTPUT
+      - uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: ghcr.io/assistialab/assistialab-agents:${{ steps.meta.outputs.TAG }}
