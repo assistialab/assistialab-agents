@@ -1,0 +1,58 @@
+<!doctype html>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="./styles.css" />
+<title>AssistiaLab — Agents</title>
+
+<header class="site-header">
+  <h1>AssistiaLab Agents</h1>
+  <p>Select an agent to preview or open its page.</p>
+</header>
+
+<main class="grid">
+  <!-- Example agent card #1 -->
+  <article class="card" data-url="./agents/website-creator.html">
+    <h2>Website Creator</h2>
+    <p>Generates a static site (HTML/CSS/README).</p>
+    <div class="card-actions">
+      <a class="btn" href="./agents/website-creator.html">Open</a>
+      <button class="btn btn-secondary preview-btn" type="button">Preview</button>
+    </div>
+  </article>
+
+  <!-- Example agent card #2 (placeholder) -->
+  <article class="card" data-url="./agents/content-writer.html">
+    <h2>Content Writer</h2>
+    <p>Writes landing copy and blog posts.</p>
+    <div class="card-actions">
+      <a class="btn" href="./agents/content-writer.html">Open</a>
+      <button class="btn btn-secondary preview-btn" type="button">Preview</button>
+    </div>
+  </article>
+
+  <!-- Example agent card #3 (placeholder) -->
+  <article class="card" data-url="./agents/image-helper.html">
+    <h2>Image Helper</h2>
+    <p>Optimizes images for the site.</p>
+    <div class="card-actions">
+      <a class="btn" href="./agents/image-helper.html">Open</a>
+      <button class="btn btn-secondary preview-btn" type="button">Preview</button>
+    </div>
+  </article>
+</main>
+
+<section class="preview">
+  <iframe id="preview-frame" title="Agent preview"></iframe>
+</section>
+
+<script>
+  // Load preview into the iframe when "Preview" is clicked
+  document.querySelectorAll('.preview-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const card = e.target.closest('.card');
+      const url = card?.dataset?.url;
+      if (url) document.getElementById('preview-frame').src = url;
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    });
+  });
+</script>
