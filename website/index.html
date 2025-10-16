@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AssistiaLab • AI Labs</title>
+  <style>
+    :root{
+      --bg:#0b1220;--bg2:#0f172a;--card:#141c2e;--muted:#94a3b8;--text:#e5e7eb;--brand1:#14b8a6;--brand2:#6366f1;--border:rgba(255,255,255,.08);
+    }
+    *{box-sizing:border-box}body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;line-height:1.5;color:var(--text);background:linear-gradient(#070c18,#0b1220 30%,#0f172a)}
+    .container{max-width:1120px;margin:0 auto;padding:0 16px}
+    header{position:sticky;top:0;z-index:20;background:rgba(11,18,32,.6);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+    .brand{display:flex;align-items:center;gap:10px}
+    .brand-badge{height:36px;width:36px;border-radius:12px;padding:2px;background:linear-gradient(135deg,var(--brand1),var(--brand2))}
+    .brand-badge>span{display:grid;place-items:center;height:100%;width:100%;border-radius:10px;background:#0b1220;font-weight:700;color:#67e8f9}
+    .navlinks{display:none;gap:6px}
+    .navlinks a{color:var(--text);opacity:.9;text-decoration:none;padding:6px 10px;border-radius:8px}
+    .navlinks a:hover{background:rgba(255,255,255,.06)}
+    .actions{display:flex;gap:8px}
+    .btn{border:1px solid var(--border);background:rgba(255,255,255,.06);color:var(--text);padding:8px 12px;border-radius:10px;font-size:14px;cursor:pointer}
+    .btn.primary{background:var(--brand1);color:#0b1220;border-color:transparent}
+    .hero{padding:48px 0 20px}
+    .pill{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--border);background:rgba(255,255,255,.06);padding:6px 10px;border-radius:999px;color:#7ee6db;font-size:12px}
+    h1{font-size:36px;line-height:1.2;margin:14px 0 6px}
+    p.lead{max-width:720px;color:var(--muted);margin:0 0 16px}
+    .controls{display:grid;grid-template-columns:1fr;gap:12px;margin:10px 0 6px}
+    .search{position:relative}
+    .search input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:rgba(255,255,255,.06);color:var(--text)}
+    .tags{display:flex;flex-wrap:wrap;gap:8px}
+    .tag{padding:6px 10px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,.04);font-size:13px;cursor:pointer}
+    .tag.active{background:rgba(255,255,255,.14)}
+    .sort{justify-self:end}
+    .grid{display:grid;grid-template-columns:1fr;gap:14px;margin:20px 0 48px}
+    .card{border:1px solid var(--border);background:rgba(255,255,255,.06);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:10px}
+    .row{display:flex;justify-content:space-between;align-items:center}
+    .badge{font-size:12px;border:1px solid var(--border);background:rgba(255,255,255,.06);padding:4px 8px;border-radius:999px}
+    .title{font-weight:700;font-size:18px}
+    .desc{color:var(--muted);font-size:14px}
+    .chips{display:flex;gap:6px;flex-wrap:wrap}
+    .chip{font-size:12px;border:1px solid var(--border);padding:4px 8px;border-radius:999px;background:rgba(0,0,0,.25);color:#cbd5e1}
+    .card .actions{justify-content:space-between}
+    footer{border-top:1px solid var(--border);background:#0b1220}
+    footer .ft{display:grid;gap:16px;padding:22px 0}
+    @media(min-width:768px){
+      .navlinks{display:flex}
+      .controls{grid-template-columns:2fr 1fr}
+      .grid{grid-template-columns:repeat(3,1fr)}
+    }
+    /* Light theme overrides */
+    [data-theme="light"]{
+      --bg:#f6f7fb;--bg2:#ffffff;--card:#ffffff;--muted:#475569;--text:#0f172a;--brand1:#0ea5e9;--brand2:#7c3aed;--border:rgba(2,6,23,.12);
+      color-scheme: light;
+    }
+    [data-theme="light"] body{background:linear-gradient(#eef2ff,#f6f7fb 30%,#ffffff)}
+    [data-theme="light"] .brand-badge>span{background:#ffffff;color:#155e75}
+    [data-theme="light"] .navlinks a:hover{background:rgba(2,6,23,.06)}
+    [data-theme="light"] .btn{background:rgba(2,6,23,.04);color:var(--text);border-color:var(--border)}
+    [data-theme="light"] .btn.primary{background:var(--brand1);color:white}
+    [data-theme="light"] .pill{background:rgba(2,6,23,.04);color:#0369a1;border-color:var(--border)}
+    [data-theme="light"] .search input{background:rgba(2,6,23,.04);color:var(--text)}
+    [data-theme="light"] .tag{background:rgba(2,6,23,.04)}
+    [data-theme="light"] .tag.active{background:rgba(2,6,23,.12)}
+    [data-theme="light"] .card{background:#ffffff}
+    [data-theme="light"] footer{background:#f6f7fb}
+    /* Fixed full‑page background layer (works even if theme overrides body) */
+  .bg-aurora{position:fixed;inset:0;pointer-events:none;z-index:0;background:
+    radial-gradient(800px 500px at 20% -10%, rgba(99,102,241,.25), transparent 60%),
+    radial-gradient(700px 500px at 80% 10%, rgba(20,184,166,.25), transparent 60%),
+    linear-gradient(#070c18,#0b1220 30%,#0f172a);
+  }
+  .labs-layer{position:relative}
+  [data-theme="light"] .bg-aurora{background:
+    radial-gradient(820px 540px at 18% -8%, rgba(147,51,234,.20), transparent 60%),
+    radial-gradient(760px 520px at 85% 6%,  rgba(168,85,247,.16), transparent 62%),
+    radial-gradient(700px 560px at 52% 118%, rgba(217,70,239,.12), transparent 65%),
+    linear-gradient(#efe9ff,#f6f7fb 30%,#ffffff)}
+  /* Animated purple/blue aurora background (scoped to this block) */
+  .labs-root{position:relative;isolation:isolate;min-height:100vh}
+  .bg-aurora{position:absolute;inset:-12vh -12vw;z-index:0;pointer-events:none;background:
+    radial-gradient(820px 540px at 18% -8%, rgba(147,51,234,.32), transparent 60%),
+    radial-gradient(760px 520px at 85% 6%,  rgba(168,85,247,.26), transparent 62%),
+    radial-gradient(700px 560px at 52% 118%, rgba(217,70,239,.20), transparent 65%),
+    linear-gradient(#060a14, #0a0f1f 30%, #0b1220);
+    filter:saturate(115%);
+    animation: aurora-pan 36s ease-in-out infinite alternate, aurora-zoom 28s ease-in-out infinite alternate;
+  }
+  .labs-layer{position:relative;z-index:1}
+  @keyframes aurora-pan{0%{background-position:0% 0%,100% 0%,50% 110%,50% 50%}100%{background-position:18% 8%,82% 5%,46% 95%,50% 50%}}
+  @keyframes aurora-zoom{0%{transform:scale(1) rotate(.0001deg)}100%{transform:scale(1.08) rotate(.0001deg)}}
+  [data-theme="light"] .bg-aurora{background:
+    radial-gradient(820px 540px at 18% -8%, rgba(99,102,241,.22), transparent 60%),
+    radial-gradient(760px 520px at 85% 6%,  rgba(59,130,246,.18), transparent 62%),
+    radial-gradient(700px 560px at 52% 118%, rgba(168,85,247,.14), transparent 65%),
+    linear-gradient(#eef2ff,#f6f7fb 30%,#ffffff)}
+</style>
+</head>
+<body>
+  <div class="labs-root">
+    <div class="bg-aurora" aria-hidden="true"></div>
+  <header class="labs-layer">
+    <div class="container nav">
+      <div class="brand">
+        <div class="brand-badge"><span>⚗️</span></div>
+        <div>
+          <div style="font-size:12px;color:#5eead4">AssistiaLab</div>
+          <div style="font-weight:600">AI Labs</div>
+        </div>
+      </div>
+      <nav class="navlinks">
+        <a href="#">Overview</a>
+        <a href="#">Agents</a>
+        <a href="#">Papers</a>
+        <a href="#">Releases</a>
+      </nav>
+      <div class="actions">
+        <button class="btn" onclick="location.hash='#docs'">Docs</button>
+        <button id="themeToggle" class="btn" aria-pressed="false" aria-label="Toggle theme">☀️/🌙</button>
+        <select id="sort" class="btn" aria-label="Sort">
+          <option value="featured">Sort: Featured</option>
+          <option value="alpha">Sort: A → Z</option>
+          <option value="level">Sort: Maturity</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero labs-layer">
+    <div class="container">
+      <span class="pill">Research • Demos • Agents</span>
+      <h1>Explore AssistiaLab’s experimental agents and research sandboxes</h1>
+      <p class="lead">Early looks at models, adapters, and no‑code tools. Try the demos, read the notes, and tell us what to build next.</p>
+      <div class="actions" style="margin-top:10px">
+        <button class="btn primary" onclick="location.href='https://calendly.com/webroade-info'">Launch Playground</button>
+        <button class="btn">View Changelog</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="container labs-layer">
+    <div class="controls">
+      <div class="search"><input id="q" type="search" placeholder="Search labs, e.g. vision, no‑code, voice…" /></div>
+      <div class="sort tags" id="tags"></div>
+    </div>
+
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section id="docs" class="container labs-layer" style="margin:24px 0 0">
+    <h2 style="font-size:22px;margin:0 0 8px">Docs</h2>
+    <p class="desc">Quick links for your team. Replace these with your real docs anytime.</p>
+    <div class="grid" style="grid-template-columns:repeat(3,1fr)">
+      <article class="card"><div class="title">Getting Started</div><div class="desc">How to use AssistiaLab AI Labs interface, add agents, and wire links.</div><div class="actions"><a class="btn" target="_blank" rel="noopener" href="https://calendly.com/webroade-info">Book an onboarding call</a></div></article>
+      <article class="card"><div class="title">Agent Builder Guide</div><div class="desc">YAML vs. UI, adapters, environments, and publishing.</div><div class="actions"><a class="btn" target="_blank" rel="noopener" href="https://assistialab.org/2025/09/12/agent-builder/">Open guide</a></div></article>
+      <article class="card"><div class="title">Changelog</div><div class="desc">What changed in the last release of your agents and UI.</div><div class="actions"><a class="btn" target="_blank" rel="noopener" href="#">Coming soon</a></div></article>
+    </div>
+  </section>
+
+  <footer class="labs-layer">
+    <div class="container ft">
+      <div>
+        <div style="display:flex;align-items:center;gap:8px"><div class="brand-badge" style="height:32px;width:32px"><span style="font-size:12px">⚗️</span></div><strong>AssistiaLab • AI Labs</strong></div>
+        <div style="color:#94a3b8;font-size:14px;margin-top:6px">© <span id="yr"></span> AssistiaLab. Experiments ahead — mind the cones.</div>
+      </div>
+      <div style="color:#cbd5e1;font-size:14px">
+        <div style="font-weight:600">Contact</div>
+        Questions or partnership ideas? <a href="mailto:radebisi@assistialab.com" style="color:#7dd3fc">radebisi@assistialab.com</a>
+      </div>
+      <div style="color:#cbd5e1;font-size:14px">
+        <div style="font-weight:600">Legal</div>
+        By using the demos you agree to experimental terms.
+      </div>
+    </div>
+  </footer>
+  </div>
+
+  <script>
+    const LABS = [
+      {id:'website-creator', title:'Website Creator Agent', blurb:'No-code site builder that emits clean HTML/CSS or React + Tailwind.', tags:['No-code','Web','Generator','Writing'], level:'Demo', href:'https://assistialab.org/2025/09/12/assistialab-preview-theme/'},
+      {id:'app-generator', title:'App Generator Agent', blurb:'Turn specs into working web apps fast—layouts, forms, and data wiring.', tags:['No-code','Apps','Generator'], level:'Demo', href:'https://assistialab.org/2025/09/21/app-builder-agent-2/'},
+      {id:'image-maker', title:'Image Maker Agent', blurb:'Generate/enhance images; background removal via adapters.', tags:['Image','Generator','No-code'], level:'Demo', href:'https://assistialab.org/2025/09/12/image-making-agent/'},
+      {id:'video-maker', title:'Video Maker Agent', blurb:'Script-to-video teasers and quick edits with AI cuts.', tags:['Video','Generator'], level:'Demo', href:'https://assistialab.org/2025/09/12/video-making-agent/'},
+      {id:'text-generator', title:'Text Generator Agent', blurb:'Long-form & structured copy; supports JSON schema output.', tags:['NLP','Generation','JSON','Writing'], level:'Demo', href:'https://assistialab.org/2025/09/12/text-generator-agent/'},
+      {id:'ad-copy', title:'Ad Copy Agent', blurb:'High-converting headlines and ad variants with tone control.', tags:['NLP','Marketing','Writing'], level:'Demo', href:'https://assistialab.org/2025/09/12/ad-copy-agent/'},
+      {id:'content-marketing', title:'Content Marketing Agent', blurb:'Content calendars, briefs, and SEO-optimized posts.', tags:['NLP','Marketing','SEO','Writing'], level:'Demo', href:'https://assistialab.org/2025/09/12/content-marketing-agent/'},
+      {id:'prompt-generator', title:'Prompt Generator Agent', blurb:'Reusable prompts and eval-ready variants for consistent outputs.', tags:['NLP','No-code'], level:'Demo', href:'https://assistialab.org/2025/09/12/prompt-generator-agent/'},
+      {id:'product-photographer', title:'Product Photographer Agent', blurb:'Mockups, shadows, and lighting tweaks for product shots.', tags:['Image','E-commerce'], level:'Demo', href:'https://assistialab.org/2025/09/12/product-photographer-agent/'},
+      {id:'chatbot-builder', title:'Chatbot Builder Agent', blurb:'Build chat assistants with tools, memory, and handoff—no code required.', tags:['Chat','NLP','No-code'], level:'Labs', href:'https://assistialab.org/2025/09/12/chatbot-builder-agent/'},
+      {id:'agent-builder', title:'Agent Builder', blurb:'Create and configure AI agents via UI or YAML—then publish.', tags:['No-code','Builder'], level:'Demo', href:'https://assistialab.org/2025/10/01/agent-builder-2/'},
+      {id:'market-researcher', title:'Market Researcher Agent', blurb:'Competitive scans, clustering, and insight briefs with citations.', tags:['Research','Analytics'], level:'Preview', href:'https://assistialab.org/2025/09/12/market-researcher-agent/'},
+      {id:'decision-analysis', title:'Decision Analysis Agent', blurb:'Tradeoff matrices, scoring models, and recommendations.', tags:['Analytics'], level:'Preview', href:'https://assistialab.org/2025/09/12/decision-analysis-agent/'},
+      {id:'strategic-planner', title:'Strategic Planner Agent', blurb:'Goals, OKRs, roadmaps, and milestone planning.', tags:['Analytics','Planning'], level:'Preview', href:'https://assistialab.org/2025/09/14/strategic-planner-agent/'},
+      {id:'financial-analyst', title:'Financial Analyst Agent', blurb:'Ratios, scenarios, and KPI dashboards from raw data.', tags:['Finance','Analytics'], level:'Preview', href:'https://assistialab.org/2025/09/14/financial-analyst-agent/'},
+      {id:'data-analyst', title:'Data Analyst Agent', blurb:'Cleaning, EDA, and chart-ready summaries.', tags:['Data','Analytics'], level:'Preview', href:'https://assistialab.org/2025/09/14/data-analyst-agent/'},
+      {id:'trend-spotter', title:'Trend Spotter Agent', blurb:'Detect trajectories across time-series and mentions.', tags:['Analytics','Data'], level:'Preview', href:'https://assistialab.org/2025/09/14/trend-spotter-agent/'},
+      {id:'financial-modeler', title:'Financial Modeller Agent', blurb:'Spreadsheet-style projections and sensitivity analysis.', tags:['Finance','Analytics'], level:'Preview', href:'https://assistialab.org/2025/09/14/266/'},
+      {id:'competitor-analyst', title:'Competitor Analyst Agent', blurb:'Profiles, moats, and SWOTs auto-generated.', tags:['Research','Analytics'], level:'Preview', href:'https://assistialab.org/2025/09/14/competitor-analyst-agent/'},
+      {id:'knowledge-agent', title:'Knowledge Agent', blurb:'QA over your docs with retrieval and citations.', tags:['NLP','Research'], level:'Preview', href:'https://assistialab.org/2025/09/12/knowledge-agent/'},
+      {id:'automation-agent', title:'Automation Agent', blurb:'Build multi-step automations across apps.', tags:['Automation','No-code'], level:'Labs', href:'https://assistialab.org/2025/09/12/automation-agent/'},
+      {id:'control-agent', title:'Control Agent', blurb:'Device/control loops with safety guardrails.', tags:['Automation','Robotics'], level:'Labs', href:'https://assistialab.org/2025/09/12/control-agent/'},
+      {id:'navigation-agent', title:'Navigation Agent', blurb:'Routing and logistics helpers for tasks or bots.', tags:['Automation','Robotics'], level:'Labs', href:'https://assistialab.org/2025/09/12/navigation-agent/'},
+      {id:'simulation-agent', title:'Simulation Agent', blurb:'What-if simulations and digital twin stubs.', tags:['Robotics','Analytics'], level:'Labs', href:'https://assistialab.org/2025/09/12/simulation-agent/'},
+      {id:'task-planning', title:'Task Planning Agent', blurb:'Decompose goals into tasks with dependencies.', tags:['Automation','Planning'], level:'Labs', href:'https://assistialab.org/2025/09/12/task-planning-agent/'},
+      {id:'process-automator', title:'Process Automator Agent', blurb:'Map and automate business processes.', tags:['Automation','No-code'], level:'Labs', href:'https://assistialab.org/2025/09/14/process-automator-agent/'},
+      {id:'robotic-process', title:'Robotic Process Agent', blurb:'RPA-style UI automation and scraping.', tags:['Automation','Robotics'], level:'Labs', href:'https://assistialab.org/2025/09/14/robotic-process-agent/'},
+      {id:'data-scraper', title:'Data Scraper Agent', blurb:'Configurable web extraction templates.', tags:['Data','Automation'], level:'Labs', href:'https://assistialab.org/2025/09/14/data-scraper-agent/'},
+      {id:'iot-manager', title:'IoT Manager Agent', blurb:'Monitor and orchestrate IoT devices.', tags:['Automation','IoT'], level:'Labs', href:'https://assistialab.org/2025/09/14/iot-manager-agent/'},
+      {id:'api-builder', title:'API Builder Agent', blurb:'Define and scaffold APIs from specs.', tags:['DevOps','Integration'], level:'Labs', href:'https://assistialab.org/2025/09/12/api-builder-agent/'},
+      {id:'code-agent-builder', title:'Code Agent Builder', blurb:'Compose code agents with tools and tests.', tags:['DevOps'], level:'Labs', href:'https://assistialab.org/2025/09/12/code-agent-builder/'},
+      {id:'serverless-deployer', title:'Serverless Deployer Agent', blurb:'Package and deploy to serverless quickly.', tags:['DevOps'], level:'Labs', href:'https://assistialab.org/2025/09/14/serverless-deployer-agent/'},
+      {id:'security-auditor', title:'Security Auditor Agent', blurb:'Static checks, secrets, and dependency risks.', tags:['Security','DevOps'], level:'Labs', href:'https://assistialab.org/2025/09/14/security-auditor-agent/'},
+      {id:'system-diagnostician', title:'System Diagnostician Agent', blurb:'Checklists and health checks for systems.', tags:['DevOps'], level:'Labs', href:'https://assistialab.org/2025/09/14/system-diagnostician-agent/'},
+      {id:'code-auditor', title:'Code Auditor Agent', blurb:'Linting, style, and code review suggestions.', tags:['DevOps'], level:'Labs', href:'https://assistialab.org/2025/09/14/code-auditor-agent/'},
+      {id:'database-manager', title:'Database Manager Agent', blurb:'Schema design, migrations, and queries.', tags:['Data','DevOps'], level:'Labs', href:'https://assistialab.org/2025/09/14/database-manager-agent/'},
+      {id:'api-integrator', title:'API Integrator Agent', blurb:'Connect SaaS APIs; map fields and flows.', tags:['Integration','DevOps'], level:'Labs', href:'https://assistialab.org/2025/09/14/api-integrator-agent/'},
+      {id:'smart-connector', title:'Smart Connector Agent', blurb:'Reusable connectors for common platforms.', tags:['Integration','DevOps'], level:'Labs', href:'https://assistialab.org/2025/09/14/smart-connector-agent/'},
+      {id:'ai-trainer', title:'AI Trainer Agent', blurb:'Dataset prep, labeling prompts, and evals.', tags:['AI','Data'], level:'Labs', href:'https://assistialab.org/2025/09/14/ai-trainer-agent/'},
+      {id:'omni-agent', title:'AssistiaLab Omni Agent', blurb:'All-in-one multi-tool super-agent.', tags:['Core AI','No-code'], level:'Labs', href:'https://assistialab.org/2025/09/12/assistialab-omni-agent/'},
+      {id:'vision-agent', title:'Vision Agent', blurb:'Image understanding, tagging, and background removal with adapters.', tags:['Computer Vision','Image'], level:'Demo', href:'https://assistialab.org/2025/09/12/vision-agent/'},
+      {id:'voice-agent', title:'Voice Agent', blurb:'Realtime voice chat with TTS/STS and call routing via Twilio.', tags:['Speech','Realtime'], level:'Preview', href:'https://assistialab.org/2025/09/12/voice-agent/'},
+      {id:'health-builder', title:'Health Builder', blurb:'Health workflows: vitals, triage, and counseling tools.', tags:['Health','No-code'], level:'Labs', href:'https://assistialab.org/2025/09/14/298/'},
+      {id:'soccer-agent', title:'Sport Development Agent', blurb:'Curriculum, drills, and progress tracking for players.', tags:['Sports','Coach'], level:'Labs', href:'https://assistialab.org/2025/09/14/soccer-agent/'},
+
+      // *** NEW: Six conversational/writing utilities ***
+      {id:'social-caption', title:'Social Caption Agent', blurb:'Auto-drafts catchy social captions and hashtags from a brief or link.', tags:['NLP','Marketing','Social','Writing'], level:'Demo', href:'https://assistialab.org/2025/10/10/social-caption-agent/'},
+      {id:'email-reply', title:'Email Reply Assistant', blurb:'Suggests polite, on‑brand replies with tone options and quick inserts.', tags:['NLP','Productivity','Email','Writing'], level:'Demo', href:'https://assistialab.org/2025/10/02/email-reply-assistant/'},
+      {id:'paraphraser', title:'Paraphraser & Style Changer', blurb:'Rewrite text to different tones—concise, formal, playful, or technical.', tags:['NLP','Writing'], level:'Demo', href:'https://assistialab.org/2025/10/02/paraphraser-style-changer/'},
+      {id:'translator', title:'Translator Agent', blurb:'High‑quality translation with glossary overrides and informal/formal modes.', tags:['NLP','Translation'], level:'Demo', href:'https://assistialab.org/2025/10/10/translator-agent/'},
+      {id:'summarizer', title:'Summarizer', blurb:'TL;DRs, key bullets, and action items from articles, PDFs, or emails.', tags:['NLP','Summarization','Research'], level:'Demo', href:'https://assistialab.org/2025/10/02/summarizer/'},
+      {id:'blog-writer', title:'Writer / Blog Assistant', blurb:'Outlines, SEO briefs, and long‑form drafts with headings and CTAs.', tags:['NLP','Writing','Marketing','SEO'], level:'Demo', href:'https://assistialab.org/2025/10/02/writer-blog-assistant/'}
+    ];
+
+    const TAGS = ['All','No-code','Builder','Web','Apps','NLP','Chat','Image','Video','JSON','Research','Analytics','Finance','Data','Automation','Robotics','IoT','DevOps','Integration','Security','AI','Core AI','Health','Sports','Realtime','Marketing','SEO',
+      // new topical tags for the 6 agents
+      'Writing','Email','Social','Translation','Summarization','Productivity'
+    ];
+
+    const grid = document.getElementById('grid');
+    const q = document.getElementById('q');
+    const sortSel = document.getElementById('sort');
+    const tagsBox = document.getElementById('tags');
+    const yr = document.getElementById('yr');
+    yr.textContent = new Date().getFullYear();
+
+    let activeTag = 'All';
+
+    function renderTags(){
+      tagsBox.innerHTML = '';
+      TAGS.forEach(t => {
+        const b = document.createElement('button');
+        b.className = 'tag' + (t===activeTag? ' active':'' );
+        b.textContent = t; b.onclick = ()=>{ activeTag = t; render();};
+        tagsBox.appendChild(b);
+      });
+    }
+
+    function sortItems(items){
+      if(sortSel.value==='alpha') return items.slice().sort((a,b)=>a.title.localeCompare(b.title));
+      if(sortSel.value==='level'){
+        const order = {Demo:0, Preview:1, Labs:2};
+        return items.slice().sort((a,b)=> order[a.level]-order[b.level]);
+      }
+      return items; // featured
+    }
+
+    function render(){
+      const term = q.value.trim().toLowerCase();
+      let items = LABS.filter(l => {
+        const matchesQ = !term || l.title.toLowerCase().includes(term) || l.blurb.toLowerCase().includes(term);
+        const matchesTag = activeTag==='All' || l.tags.includes(activeTag);
+        return matchesQ && matchesTag;
+      });
+      items = sortItems(items);
+      grid.innerHTML = '';
+      items.forEach(l => {
+        const card = document.createElement('article');
+        card.className = 'card';
+        card.innerHTML = `
+          <div class="row"><span class="badge">${l.level}</span><span style="color:#5eead4">★</span></div>
+          <div class="title">${l.title}</div>
+          <div class="desc">${l.blurb}</div>
+          <div class="chips">${l.tags.map(t=>`<span class=\"chip\">${t}</span>`).join('')}</div>
+          <div class="actions"><a class="btn primary" target="_blank" rel="noopener" href="${l.href}">Open Demo</a><button class="btn" aria-label="Learn more about ${l.title}">Learn more</button></div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    q.addEventListener('input', render);
+    sortSel.addEventListener('change', render);
+
+    renderTags();
+    render();
+
+    // THEME TOGGLING
+    const root = document.documentElement;
+    const savedTheme = localStorage.getItem('assistialab_theme');
+    if(savedTheme){ root.setAttribute('data-theme', savedTheme); }
+    const btnToggle = document.getElementById('themeToggle');
+    function setTheme(mode){
+      if(mode==='light'){ root.setAttribute('data-theme','light'); btnToggle.setAttribute('aria-pressed','true'); }
+      else { root.removeAttribute('data-theme'); btnToggle.setAttribute('aria-pressed','false'); }
+      localStorage.setItem('assistialab_theme', mode==='light'?'light':'dark');
+      btnToggle.textContent = mode==='light' ? '🌙 Dark' : '☀️ Light';
+    }
+    setTheme(savedTheme==='light'?'light':'dark');
+    btnToggle.addEventListener('click', ()=>{
+      const isLight = root.getAttribute('data-theme')==='light';
+      setTheme(isLight ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>
